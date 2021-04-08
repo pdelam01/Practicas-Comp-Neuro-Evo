@@ -22,28 +22,34 @@ import static io.jenetics.engine.Limits.bySteadyFitness;
 import java.util.Arrays;
 import java.util.List;
 
-
-
-
 public class MainGA {
 	final static boolean numGenerationsLimit = false;
 	final static boolean evaluateInfo = true;
-	
-	 public static int evaluate(Genotype<EnumGene<String>> gt) {
-		 return 0;
+	private static final List<String> ciudades = Arrays.asList("Albacete", "Bercianos del Paramo", "Calatayud", "Don Benito", "Escobar de Campos");
+	private static final Planisferio mapa = new Planisferio();
+
+	 public static int evaluate(final Genotype<EnumGene<String>> gt) {
+
+		 String [] trip = new String[ciudades.size()];
+	        
+	        for(int i=0; i<gt.chromosome().length(); i++){
+	            trip [i] = gt.chromosome().gene().toString();
+	        }
+	              
+	        return mapa.maxValue() - mapa.longitudViaje(trip);
 	}
 	
 	public static void main(String[] args) {
-		final int populationSize = 4;
+		final int populationSize = ciudades.size();
 		final double probMutation = 0.1;
-		final int probCrossover = 85;
+		final double probCrossover = 0.85;
 		final int maxNumGenerations = 200;
 		final int maxStableGenerations = 3;
-		List<String> ciudades = Arrays.asList("Albacete", "Bercianos del Paramo", "Calatayud", "Don Benito", "Escobar de Campos");
+
 		
 		
 		/* Creamos los genes, que son una secuencia de alelos (datos dentro de los genes) */
-		/* ISeq: secuencia inmutable, ordenada y de tamaÒo fijo. */
+		/* ISeq: secuencia inmutable, ordenada y de tama√±o fijo. */
 		ISeq<String> genes = ISeq.of(ciudades);
 		
 		/* Creamos (Factory) un  individuo (Genotype) formado por un conjunto de genes (EnumGene) */
@@ -53,9 +59,9 @@ public class MainGA {
 		 * Engine, la clase principal, corre el algoritmo al completo
 		 * 
 		 * PartiallyMatchedCrossover: Garantiza que todos los genes se encuentran exactamente una vez en cada cromosoma.
-		 * 							  En este tipo de cruce no se duplica ning˙n gen (permutaciones)
+		 * 							  En este tipo de cruce no se duplica ning√∫n gen (permutaciones)
 		 * 
-		 * SwapMutator: Permite mutaciÛn del cromosoma cambiando el orden de los genes en este.
+		 * SwapMutator: Permite mutaci√≥n del cromosoma cambiando el orden de los genes en este.
 		 */
 		Engine<EnumGene<String>, Integer> engine = Engine
 	        	.builder(MainGA::evaluate,indiv)
@@ -66,32 +72,30 @@ public class MainGA {
 	        			  new SwapMutator<>(probMutation))
 	        	.build();
 		
-		/* EvolutionStatics: recopila informaciÛn estadÌstica adicional */
+		/* EvolutionStatics: recopila informaci√≥n estad√≠stica adicional */
 		EvolutionStatistics<Integer, DoubleMomentStatistics> stats = EvolutionStatistics.ofNumber();
 		
 		/* Fenotipo */
 		if(numGenerationsLimit) {
 			Phenotype<EnumGene<String>, Integer> result = engine.stream()
-					/* La evoluciÛn parar· cuando llegue a "maxNumGenerations" generaciones */
+					/* La evoluci√≥n parar√° cuando llegue a "maxNumGenerations" generaciones */
 					.limit(maxNumGenerations)
-					/* Actualizamos las estadÌsticas por cada generaciÛn */
+					/* Actualizamos las estad√≠sticas por cada generaci√≥n */
 					.peek(stats)
 					/* Seleccionamos el mejor fenotipo de todos */
 					.collect(toBestPhenotype());
-			
+
 			System.out.println(result);
 		}else {
 			Phenotype<EnumGene<String>, Integer> result = engine.stream()
-					/* La evoluciÛn parar· cuando llegue a "maxStableGenerations" generaciones estables (iguales) */
+					/* La evoluci√≥n parar√° cuando llegue a "maxStableGenerations" generaciones estables (iguales) */
 					.limit(bySteadyFitness(maxStableGenerations))
 					.peek(stats)
 					.collect(toBestPhenotype());
-			
+
 			System.out.println(result);
 		}
-		
-		
-		MainGA.evaluateInfoPrint("EstadÌsticas de la poblaciÛn: \n"+stats);
+		MainGA.evaluateInfoPrint("Estad√≠sticas de la poblaci√≥n: \n"+stats);
 	}
 	
 	private static void evaluateInfoPrint(String info) {
