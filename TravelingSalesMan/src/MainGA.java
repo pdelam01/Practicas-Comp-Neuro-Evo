@@ -25,29 +25,28 @@ import java.util.List;
 public class MainGA {
 	final static boolean numGenerationsLimit = false;
 	final static boolean evaluateInfo = true;
-	private static final List<String> ciudades = Arrays.asList("Albacete", "Bercianos del Paramo", "Calatayud", "Don Benito", "Escobar de Campos");
+	final static boolean matrizRecorridoInfo = true;
+	public static final List<String> ciudades = Arrays.asList("Albacete", "Bercianos del Paramo", "Calatayud", "Don Benito", "Escobar de Campos");
 	private static final Planisferio mapa = new Planisferio();
+	private static Phenotype<EnumGene<String>, Integer> result;
 
 	 public static int evaluate(final Genotype<EnumGene<String>> gt) {
+		 String [] viaje = new String[ciudades.size()];
 
-		 String [] trip = new String[ciudades.size()];
-	        
-	        for(int i=0; i<gt.chromosome().length(); i++){
-	            trip [i] = gt.chromosome().gene().toString();
-	        }
-	              
-	        return mapa.maxValue() - mapa.longitudViaje(trip);
+		 for(int i=0; i<gt.chromosome().length(); i++){
+		 	viaje [i] = gt.get(0).get(i).toString();
+		 }
+
+		 return mapa.longitudMaxMapa() - mapa.longitudViaje(viaje);
 	}
 	
 	public static void main(String[] args) {
-		final int populationSize = ciudades.size();
+		final int populationSize = 5;
 		final double probMutation = 0.1;
 		final double probCrossover = 0.85;
 		final int maxNumGenerations = 200;
 		final int maxStableGenerations = 3;
 
-		
-		
 		/* Creamos los genes, que son una secuencia de alelos (datos dentro de los genes) */
 		/* ISeq: secuencia inmutable, ordenada y de tamaño fijo. */
 		ISeq<String> genes = ISeq.of(ciudades);
@@ -65,8 +64,8 @@ public class MainGA {
 		 */
 		Engine<EnumGene<String>, Integer> engine = Engine
 	        	.builder(MainGA::evaluate,indiv)
-	        	.optimize(Optimize.MINIMUM)
 	        	.populationSize(populationSize)
+				.optimize(Optimize.MAXIMUM)
 	        	.selector(new RouletteWheelSelector<>())
 	        	.alterers(new PartiallyMatchedCrossover<>(probCrossover), 
 	        			  new SwapMutator<>(probMutation))
@@ -74,10 +73,14 @@ public class MainGA {
 		
 		/* EvolutionStatics: recopila información estadística adicional */
 		EvolutionStatistics<Integer, DoubleMomentStatistics> stats = EvolutionStatistics.ofNumber();
+
+		if(matrizRecorridoInfo){
+			Planisferio.imprimirMatrizRecorridos();
+		}
 		
 		/* Fenotipo */
 		if(numGenerationsLimit) {
-			Phenotype<EnumGene<String>, Integer> result = engine.stream()
+			result = engine.stream()
 					/* La evolución parará cuando llegue a "maxNumGenerations" generaciones */
 					.limit(maxNumGenerations)
 					/* Actualizamos las estadísticas por cada generación */
@@ -85,23 +88,31 @@ public class MainGA {
 					/* Seleccionamos el mejor fenotipo de todos */
 					.collect(toBestPhenotype());
 
-			System.out.println(result);
 		}else {
-			Phenotype<EnumGene<String>, Integer> result = engine.stream()
+			result = engine.stream()
 					/* La evolución parará cuando llegue a "maxStableGenerations" generaciones estables (iguales) */
 					.limit(bySteadyFitness(maxStableGenerations))
 					.peek(stats)
 					.collect(toBestPhenotype());
 
-			System.out.println(result);
 		}
-		MainGA.evaluateInfoPrint("Estadísticas de la población: \n"+stats);
+		//System.out.println(result+" Puntos. Con una longitud del viaje de: "+mapa.obtenerMinimoLong()+"Km y máximo de: "+mapa.longitudMaxMapa());
+		System.out.println(MainGA.toStringResults());
+		MainGA.evaluateInfoPrint("\nEstadísticas de la población: \n"+stats);
 	}
 	
 	private static void evaluateInfoPrint(String info) {
 		if(MainGA.evaluateInfo){
 			System.out.println(info);
 		}
+	}
+
+	public static String toStringResults(){
+		StringBuilder aux = new StringBuilder();
+		aux.append("Camino mínimo y aptitud máxima: ");
+		aux.append(result).append(" puntos.\n");
+		aux.append("Longitud del viaje de: "+mapa.obtenerMinimoLong()+"Km , con valor máximo total de: "+mapa.longitudMaxMapa()+".");
+		return aux.toString();
 	}
 
 }
