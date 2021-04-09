@@ -50,7 +50,6 @@ public class Planisferio {
 	    	}
 	    	totalLong=totalLong/2;
 	    	ints.add(totalLong);
-			System.out.println("holassss"+totalLong);
 			System.out.println(ints.toString());
 			//System.out.println(Collections.min(ints));
 	    	return totalLong;

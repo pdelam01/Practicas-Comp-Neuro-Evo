@@ -112,6 +112,7 @@ public class MainGA {
 		aux.append("Camino mínimo y aptitud máxima: ");
 		aux.append(result).append(" puntos.\n");
 		aux.append("Longitud del viaje de: "+mapa.obtenerMinimoLong()+"Km , con valor máximo total de: "+mapa.longitudMaxMapa()+".");
+
 		return aux.toString();
 	}
 
