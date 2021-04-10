@@ -31,7 +31,7 @@ public class MainGA {
 	final static boolean matrizRecorridoInfo = true;
 
 	public static List<String> ciudades = Arrays.asList("Albacete", "Bercianos del Paramo", "Calatayud", "Don Benito", "Escobar de Campos");
-	private static Planisferio mapa = new Planisferio();
+	private static final Planisferio mapa = new Planisferio();
 	private static Phenotype<EnumGene<String>, Integer> result;
 
 	 public static int evaluate(final Genotype<EnumGene<String>> gt) {
@@ -124,9 +124,9 @@ public class MainGA {
      */
 	public static String toStringResults(){
 		StringBuilder aux = new StringBuilder();
-		aux.append("Camino mínimo y aptitud máxima: ");
+		aux.append("Camino mínimo y aptitud mínima: ");
 		aux.append(result).append(" puntos.\n");
-		aux.append("Longitud del viaje de: "+mapa.obtenerMinimoLong()+"Km.");
+		aux.append("Longitud del viaje de: ").append(mapa.obtenerMinimoLong()).append("Km.");
 
 		return aux.toString();
 	}

@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 public class Planisferio {
 	 	static int ciudadesSize = MainGA.ciudades.size();
@@ -14,7 +13,6 @@ public class Planisferio {
 					if (i == j) {
 						matrix[i][j]=0;
 					}
-					//matrix[i][j] = (int) (Math.random() * 100 + 1);
 					if((int) (Math.random() * 100 + 1) <= 85) {
 						matrix[i][j] = (int) (Math.random() * 100 + 1);
 					}else {
@@ -54,25 +52,30 @@ public class Planisferio {
 	    public int obtenerMinimoLong(){
 			return Collections.min(ints);
 		}
-	    
-	    public int longitudMaxMapa(){
-	    	int maxValores=0;
-	    	for (int i = 0; i < ciudadesSize; i++) {
-				for (int j = 0; j < ciudadesSize; j++) {
-					maxValores+=matrix[i][j];
-				}
-	    	}
-	    	return maxValores/2;
-	    }
 
 	    public static void imprimirMatrizRecorridos(){
+			System.out.print("\t");
+			//System.out.print("|");
+
+	    	for(char k =0;k<ciudadesSize;k++){
+				System.out.print("|"+MainGA.ciudades.get(k).charAt(0)+"|\t");
+
+			}
+			System.out.println();
+			//System.out.println();
+
 			for (int i = 0; i < ciudadesSize; i++) {
 				System.out.print("|");
+				System.out.print(MainGA.ciudades.get(i).charAt(0)+"|\t");
 				for (int j = 0; j < ciudadesSize; j++) {
-					System.out.print(matrix[i][j]);
+					if (matrix[i][j]==0){
+						System.out.print("-");
+					}else{
+						System.out.print(matrix[i][j]);
+					}
 					if (i!=matrix[j].length) System.out.print("\t");
 				}
-				System.out.println("|");
+				System.out.println();
 			}
 			System.out.println();
 		}
