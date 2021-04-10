@@ -23,11 +23,15 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainGA {
-	final static boolean numGenerationsLimit = false;
+    /* false: condicion de parada X generaciones estables | true: X generaciones totales */
+	final static boolean numGenerationsLimit = true;
+
+	/* false: no se muestra info adicional | true: sí */
 	final static boolean evaluateInfo = true;
 	final static boolean matrizRecorridoInfo = true;
-	public static final List<String> ciudades = Arrays.asList("Albacete", "Bercianos del Paramo", "Calatayud", "Don Benito", "Escobar de Campos");
-	private static final Planisferio mapa = new Planisferio();
+
+	public static List<String> ciudades = Arrays.asList("Albacete", "Bercianos del Paramo", "Calatayud", "Don Benito", "Escobar de Campos");
+	private static Planisferio mapa = new Planisferio();
 	private static Phenotype<EnumGene<String>, Integer> result;
 
 	 public static int evaluate(final Genotype<EnumGene<String>> gt) {
@@ -37,7 +41,7 @@ public class MainGA {
 		 	viaje [i] = gt.get(0).get(i).toString();
 		 }
 
-		 return mapa.longitudMaxMapa() - mapa.longitudViaje(viaje);
+		 return mapa.longitudViaje(viaje);
 	}
 	
 	public static void main(String[] args) {
@@ -65,7 +69,7 @@ public class MainGA {
 		Engine<EnumGene<String>, Integer> engine = Engine
 	        	.builder(MainGA::evaluate,indiv)
 	        	.populationSize(populationSize)
-				.optimize(Optimize.MAXIMUM)
+				.optimize(Optimize.MINIMUM)
 	        	.selector(new RouletteWheelSelector<>())
 	        	.alterers(new PartiallyMatchedCrossover<>(probCrossover), 
 	        			  new SwapMutator<>(probMutation))
@@ -74,6 +78,7 @@ public class MainGA {
 		/* EvolutionStatics: recopila información estadística adicional */
 		EvolutionStatistics<Integer, DoubleMomentStatistics> stats = EvolutionStatistics.ofNumber();
 
+		/* Mostramos la matriz de distancias */
 		if(matrizRecorridoInfo){
 			Planisferio.imprimirMatrizRecorridos();
 		}
@@ -96,22 +101,32 @@ public class MainGA {
 					.collect(toBestPhenotype());
 
 		}
-		//System.out.println(result+" Puntos. Con una longitud del viaje de: "+mapa.obtenerMinimoLong()+"Km y máximo de: "+mapa.longitudMaxMapa());
+
 		System.out.println(MainGA.toStringResults());
 		MainGA.evaluateInfoPrint("\nEstadísticas de la población: \n"+stats);
 	}
-	
+
+    /**
+     * Permite mostrar información sobre el método evaluar.
+     *
+     * @param info - String con la info a mostrar
+     */
 	private static void evaluateInfoPrint(String info) {
 		if(MainGA.evaluateInfo){
 			System.out.println(info);
 		}
 	}
 
+    /**
+     * Muestra información sobre aptitud del mejor cromosoma
+     *
+     * @return aux - String con la info a mostrar
+     */
 	public static String toStringResults(){
 		StringBuilder aux = new StringBuilder();
 		aux.append("Camino mínimo y aptitud máxima: ");
 		aux.append(result).append(" puntos.\n");
-		aux.append("Longitud del viaje de: "+mapa.obtenerMinimoLong()+"Km , con valor máximo total de: "+mapa.longitudMaxMapa()+".");
+		aux.append("Longitud del viaje de: "+mapa.obtenerMinimoLong()+"Km.");
 
 		return aux.toString();
 	}

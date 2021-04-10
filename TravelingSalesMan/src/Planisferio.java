@@ -6,7 +6,7 @@ public class Planisferio {
 	 	static int ciudadesSize = MainGA.ciudades.size();
 		static int[][] matrix = new int[ciudadesSize][ciudadesSize];
 		ArrayList<Integer> ints = new ArrayList<>();
-	 	//final int ALTO = 99999;
+	 	final int ALTO = 9999;
 	 	
 	    public Planisferio() {
 	    	for (int i = 0; i < ciudadesSize; i++) {
@@ -14,12 +14,12 @@ public class Planisferio {
 					if (i == j) {
 						matrix[i][j]=0;
 					}
-					matrix[i][j] = (int) (Math.random() * 100 + 1);
-					/*if((int) (Math.random() * 100 + 1) <= 75) {
+					//matrix[i][j] = (int) (Math.random() * 100 + 1);
+					if((int) (Math.random() * 100 + 1) <= 85) {
 						matrix[i][j] = (int) (Math.random() * 100 + 1);
 					}else {
 						matrix[i][j]=0;
-					}*/
+					}
 				}
 			}
 	    	
@@ -40,18 +40,14 @@ public class Planisferio {
 				if(i+1!=camino.length){
 					ciudad1=MainGA.ciudades.indexOf(camino[i]);
 					ciudad2=MainGA.ciudades.indexOf(camino[i+1]);
-					totalLong += matrix[ciudad1][ciudad2];
 					if(matrix[ciudad1][ciudad2]!=0){
 						totalLong += matrix[ciudad1][ciudad2];
-					}/*else{
+					}else{
 						totalLong += ALTO;
-					}*/
+					}
 				}
 	    	}
-	    	totalLong=totalLong/2;
 	    	ints.add(totalLong);
-			System.out.println(ints.toString());
-			//System.out.println(Collections.min(ints));
 	    	return totalLong;
 	    }
 
