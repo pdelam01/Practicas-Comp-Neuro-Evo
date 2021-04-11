@@ -1,16 +1,9 @@
 package pdelam.galgSalesman;
 
-/**
+/* *
  * @author pdelam01
  */
-import io.jenetics.EnumGene;
-import io.jenetics.Genotype;
-import io.jenetics.Optimize;
-import io.jenetics.PartiallyMatchedCrossover;
-import io.jenetics.PermutationChromosome;
-import io.jenetics.Phenotype;
-import io.jenetics.RouletteWheelSelector;
-import io.jenetics.SwapMutator;
+import io.jenetics.*;
 
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionStatistics;
@@ -98,8 +91,8 @@ public class MainGA {
 	        	.builder(MainGA::evaluate,indiv)
 	        	.populationSize(populationSize)
 				.optimize(Optimize.MINIMUM)
-	        	.selector(new RouletteWheelSelector<>())
-	        	.alterers(new PartiallyMatchedCrossover<>(probCrossover), 
+	        	.selector(new TournamentSelector<>())
+	        	.alterers(new PartiallyMatchedCrossover<>(probCrossover),
 	        			  new SwapMutator<>(probMutation))
 	        	.build();
 		
@@ -139,6 +132,8 @@ public class MainGA {
 			System.out.println("Compruebe que el mapa generado tiene un camino completo o aumente en numero de generaciones de este");
 			System.out.println("******************************************************************************************************");
 		}
+
+
 	}
 
     /**

@@ -1,6 +1,6 @@
 package pdelam.galgSalesman;
 
-/**
+/* *
  * @author pdelam01
  */
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.Collections;
 public class Planisferio {
 	static int ciudadesSize = MainGA.ciudades.size();
 	static int[][] matrix = new int[ciudadesSize][ciudadesSize];
-	ArrayList<Integer> ints = new ArrayList<>();
+	static ArrayList<Integer> ints = new ArrayList<>();
 	final int ALTO = 9999;
 
 	/**

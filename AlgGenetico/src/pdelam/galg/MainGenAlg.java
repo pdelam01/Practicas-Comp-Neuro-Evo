@@ -11,7 +11,7 @@ public class MainGenAlg {
 	/**
 	 * false: 2 puntos cruce | true: 1 punto cruce
 	 */
-	final static boolean onePointCrossover = false;
+	final static boolean onePointCrossover = true;
 
 	/**
 	 * false: sin elitismo | true: con elitismo
@@ -31,10 +31,10 @@ public class MainGenAlg {
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		final int populationSize = 4;
-		final int probMutation = 5;
-		final int probCrossover = 85;
+		final int probMutation = 4;
+		final int probCrossover = 90;
 		final int numGenes = 6;
-		final int maxNumGenerations = 200;
+		final int maxNumGenerations = 500;
 		int numGenerations = 0;
 
 		GeneticAlgorithm genAlg = new GeneticAlgorithm(populationSize, probMutation, probCrossover);

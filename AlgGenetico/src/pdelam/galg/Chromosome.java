@@ -9,7 +9,7 @@ public class Chromosome {
 	private double aptitude;
 	private double max[] = { 10.0, 10.0, 10.0, 10.0, 10.0, 10.0};
 	private double min[] = { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
-	DecimalFormat formato1 = new DecimalFormat("0.000");
+	DecimalFormat formato1 = new DecimalFormat("0.00");
 	
 	/**
 	 * Constructor de la clase.

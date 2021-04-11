@@ -19,7 +19,7 @@ public class GeneticAlgorithm {
 	final static boolean mutateInfo = false;
 	final static boolean bestChromosomeInfo = true;
 	
-	DecimalFormat formato = new DecimalFormat("0.000");
+	DecimalFormat formato = new DecimalFormat("0.00");
 	
 	/**
 	 * Constructor de la clase.
