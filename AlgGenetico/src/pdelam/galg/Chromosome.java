@@ -26,7 +26,7 @@ public class Chromosome {
 	 * Damos valores aleatorios a los genes de los cromosomas, dentro de 
 	 * unos limites max-min establecidos.
 	 * 
-	 * @param chromosomeTam
+	 * @param chromosomeTam -tamaño cromosoma
 	 */
 	public Chromosome(int chromosomeTam) {
 		this.chromosome = new double[chromosomeTam];
