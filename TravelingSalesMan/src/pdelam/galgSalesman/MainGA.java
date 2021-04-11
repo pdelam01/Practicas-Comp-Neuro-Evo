@@ -35,12 +35,13 @@ public class MainGA {
 	final static boolean matrizRecorridoInfo = true;
 
 	/* Parámetros generales */
-	public static final List<String> ciudades = Arrays.asList("Albacete", "Bercianos del Paramo", "Calatayud", "Don Benito", "Escobar de Campos");
-	private static final int populationSize = 5;
-	private static final double probMutation = 0.1;
+	public static final List<String> ciudades = Arrays.asList("Albacete", "Bercianos del Paramo", "Calatayud"
+			,"Don Benito", "Escobar de Campos", "Fuengirola", "Girona", "Huesca", "Ibiza", "Jerez de la Frontera");
+	private static final int populationSize = 10;
+	private static final double probMutation = 0.2;
 	private static final double probCrossover = 0.85;
-	private static final int maxNumGenerations = 9;
-	private static final int maxStableGenerations = 3;
+	private static final int maxNumGenerations = 500;
+	private static final int maxStableGenerations = 5;
 
 	private static final Planisferio mapa = new Planisferio();
 	private static Phenotype<EnumGene<String>, Integer> result;
