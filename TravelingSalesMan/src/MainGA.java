@@ -17,8 +17,10 @@ import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 
 import static io.jenetics.engine.EvolutionResult.toBestPhenotype;
+import static io.jenetics.engine.Limits.byFixedGeneration;
 import static io.jenetics.engine.Limits.bySteadyFitness;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,31 +28,54 @@ public class MainGA {
     /* false: condicion de parada X generaciones estables | true: X generaciones totales */
 	final static boolean numGenerationsLimit = true;
 
-	/* false: no se muestra info adicional | true: sí */
+	/* false: no se muestra info sobre cromosomas a evaluar | true: sí */
 	final static boolean evaluateInfo = true;
+
+    /* false: no se muestra info adicional | true: sí */
+    final static boolean statsInfo = true;
+
+    /* false: no se muestra el mapa de recorridos | true: sí */
 	final static boolean matrizRecorridoInfo = true;
 
-	public static List<String> ciudades = Arrays.asList("Albacete", "Bercianos del Paramo", "Calatayud", "Don Benito", "Escobar de Campos");
+	/* Parámetros generales */
+	public static final List<String> ciudades = Arrays.asList("Albacete", "Bercianos del Paramo", "Calatayud", "Don Benito", "Escobar de Campos");
+	private static final int populationSize = 4;
+	private static final double probMutation = 0.1;
+	private static final double probCrossover = 0.85;
+	private static final int maxNumGenerations = 3;
+	private static final int maxStableGenerations = 3;
+
 	private static final Planisferio mapa = new Planisferio();
 	private static Phenotype<EnumGene<String>, Integer> result;
+	private static int count=0;
 
-	 public static int evaluate(final Genotype<EnumGene<String>> gt) {
-		 String [] viaje = new String[ciudades.size()];
+    /**
+     * Evaluamos la aptitud de la población entera.
+     *
+     * @param individuo - cromosoma a evaluar
+     * @return longitud de cada viaje (cromosoma) evaluado
+     */
+	public static int evaluate(final Genotype<EnumGene<String>> individuo) {
+		StringBuilder aux = new StringBuilder();
+		StringBuilder aux1 = new StringBuilder();
+		List<String> listaAux = new ArrayList<>();
 
-		 for(int i=0; i<gt.chromosome().length(); i++){
-		 	viaje [i] = gt.get(0).get(i).toString();
-		 }
+		String[] viaje = new String[ciudades.size()];
 
-		 return mapa.longitudViaje(viaje);
-	}
-	
+		for (int i = 0; i < individuo.chromosome().length(); i++) {
+			viaje[i] = individuo.get(0).get(i).toString();
+			listaAux.add(viaje[i]);
+		}
+
+		funcionAuxCont(aux1);
+
+		MainGA.evaluateInfoPrint(aux.append("Cromosoma nº: ").append(++count + " ").append(listaAux)
+				.append(" * Longitud --> ").append(mapa.longitudViaje(viaje)).append(""));
+
+		return mapa.longitudViaje(viaje);
+     }
+
 	public static void main(String[] args) {
-		final int populationSize = 5;
-		final double probMutation = 0.1;
-		final double probCrossover = 0.85;
-		final int maxNumGenerations = 200;
-		final int maxStableGenerations = 3;
-
 		/* Creamos los genes, que son una secuencia de alelos (datos dentro de los genes) */
 		/* ISeq: secuencia inmutable, ordenada y de tamaño fijo. */
 		ISeq<String> genes = ISeq.of(ciudades);
@@ -82,18 +107,18 @@ public class MainGA {
 		if(matrizRecorridoInfo){
 			Planisferio.imprimirMatrizRecorridos();
 		}
-		
+
 		/* Fenotipo */
-		if(numGenerationsLimit) {
+		if (numGenerationsLimit) {
 			result = engine.stream()
 					/* La evolución parará cuando llegue a "maxNumGenerations" generaciones */
-					.limit(maxNumGenerations)
+					.limit(byFixedGeneration(maxNumGenerations))
 					/* Actualizamos las estadísticas por cada generación */
 					.peek(stats)
 					/* Seleccionamos el mejor fenotipo de todos */
 					.collect(toBestPhenotype());
 
-		}else {
+		} else {
 			result = engine.stream()
 					/* La evolución parará cuando llegue a "maxStableGenerations" generaciones estables (iguales) */
 					.limit(bySteadyFitness(maxStableGenerations))
@@ -103,7 +128,14 @@ public class MainGA {
 		}
 
 		System.out.println(MainGA.toStringResults());
-		MainGA.evaluateInfoPrint("\nEstadísticas de la población: \n"+stats);
+		MainGA.statsInfoPrint("\n\t\t\t\t\t\tEstadísticas de la población \n"+stats);
+
+		if (mapa.obtenerMinimoLong()>=mapa.longitudMaxMapa()){
+			System.out.println("\n****************************************************************************************************");
+			System.out.println("ERROR! El mapa no ha encontrado un camino correcto! Puede que no tenga solución...");
+			System.out.println("Compruebe que el mapa generado tiene un camino completo o aumente en numero de generaciones de este");
+			System.out.println("******************************************************************************************************");
+		}
 	}
 
     /**
@@ -111,11 +143,24 @@ public class MainGA {
      *
      * @param info - String con la info a mostrar
      */
-	private static void evaluateInfoPrint(String info) {
-		if(MainGA.evaluateInfo){
-			System.out.println(info);
+	private static void statsInfoPrint(String info) {
+		if(MainGA.statsInfo){
+			System.out.print(info);
+            System.out.println();
 		}
 	}
+
+    /**
+     * Permite mostrar información sobre el método evaluar.
+     *
+     * @param info - String con la info a mostrar
+     */
+    public static void evaluateInfoPrint(StringBuilder info) {
+        if(MainGA.evaluateInfo){
+
+            System.out.println(info);
+        }
+    }
 
     /**
      * Muestra información sobre aptitud del mejor cromosoma
@@ -124,11 +169,24 @@ public class MainGA {
      */
 	public static String toStringResults(){
 		StringBuilder aux = new StringBuilder();
+		System.out.println();
 		aux.append("Camino mínimo y aptitud mínima: ");
 		aux.append(result).append(" puntos.\n");
 		aux.append("Longitud del viaje de: ").append(mapa.obtenerMinimoLong()).append("Km.");
 
 		return aux.toString();
+	}
+
+	/**
+	 * Muestra por pantalla el texto "Nueva Gneración"
+	 *
+	 * @param aux1 - StringBuffer a mostrar
+	 */
+	private static void funcionAuxCont(StringBuilder aux1) {
+		if (count == 0 || count == populationSize) {
+			MainGA.evaluateInfoPrint(aux1.append("\n*********************** Nueva Generación ***********************\n"));
+			count = 0;
+		}
 	}
 
 }
