@@ -39,15 +39,14 @@ public class MainGA {
 
 	/* Parámetros generales */
 	public static final List<String> ciudades = Arrays.asList("Albacete", "Bercianos del Paramo", "Calatayud", "Don Benito", "Escobar de Campos");
-	private static final int populationSize = 4;
+	private static final int populationSize = 5;
 	private static final double probMutation = 0.1;
 	private static final double probCrossover = 0.85;
-	private static final int maxNumGenerations = 3;
+	private static final int maxNumGenerations = 9;
 	private static final int maxStableGenerations = 3;
 
 	private static final Planisferio mapa = new Planisferio();
 	private static Phenotype<EnumGene<String>, Integer> result;
-	private static int count=0;
 
     /**
      * Evaluamos la aptitud de la población entera.
@@ -67,10 +66,11 @@ public class MainGA {
 			listaAux.add(viaje[i]);
 		}
 
-		funcionAuxCont(aux1);
-
-		MainGA.evaluateInfoPrint(aux.append("Cromosoma nº: ").append(++count + " ").append(listaAux)
-				.append(" * Longitud --> ").append(mapa.longitudViaje(viaje)).append(""));
+		if(mapa.longitudMaxMapa()<mapa.longitudViaje(viaje)){
+			MainGA.evaluateInfoPrint(aux.append("Cromosoma: ").append(listaAux).append(" * Longitud --> ").append("[no hay camino]"));
+		}else{
+			MainGA.evaluateInfoPrint(aux.append("Cromosoma: ").append(listaAux).append(" * Longitud --> ").append(mapa.longitudViaje(viaje)).append(" Km"));
+		}
 
 		return mapa.longitudViaje(viaje);
      }
@@ -177,16 +177,5 @@ public class MainGA {
 		return aux.toString();
 	}
 
-	/**
-	 * Muestra por pantalla el texto "Nueva Gneración"
-	 *
-	 * @param aux1 - StringBuffer a mostrar
-	 */
-	private static void funcionAuxCont(StringBuilder aux1) {
-		if (count == 0 || count == populationSize) {
-			MainGA.evaluateInfoPrint(aux1.append("\n*********************** Nueva Generación ***********************\n"));
-			count = 0;
-		}
-	}
 
 }
