@@ -26,7 +26,7 @@ import java.util.List;
 
 public class MainGA {
     /* false: condicion de parada X generaciones estables | true: X generaciones totales */
-	final static boolean numGenerationsLimit = true;
+	final static boolean numGenerationsLimit = false;
 
 	/* false: no se muestra info sobre cromosomas a evaluar | true: sí */
 	final static boolean evaluateInfo = true;
@@ -56,7 +56,6 @@ public class MainGA {
      */
 	public static int evaluate(final Genotype<EnumGene<String>> individuo) {
 		StringBuilder aux = new StringBuilder();
-		StringBuilder aux1 = new StringBuilder();
 		List<String> listaAux = new ArrayList<>();
 
 		String[] viaje = new String[ciudades.size()];
@@ -157,7 +156,6 @@ public class MainGA {
      */
     public static void evaluateInfoPrint(StringBuilder info) {
         if(MainGA.evaluateInfo){
-
             System.out.println(info);
         }
     }
