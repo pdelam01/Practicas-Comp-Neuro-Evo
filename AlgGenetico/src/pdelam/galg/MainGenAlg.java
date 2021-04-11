@@ -3,8 +3,7 @@ package pdelam.galg;
 import java.util.ArrayList;
 
 /**
- * @author pdelam01 aka dela
- *
+ * @author pdelam01
  */
 public class MainGenAlg {
 	

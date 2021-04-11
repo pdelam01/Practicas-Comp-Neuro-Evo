@@ -13,8 +13,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
- * @author pdelam01 aka dela
- *
+ * @author pdelam01
  */
 public class Graph extends JFrame{
 	private static final long serialVersionUID = 1L;

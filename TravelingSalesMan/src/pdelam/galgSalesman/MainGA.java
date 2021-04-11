@@ -1,4 +1,8 @@
 package pdelam.galgSalesman;
+
+/**
+ * @author pdelam01
+ */
 import io.jenetics.EnumGene;
 import io.jenetics.Genotype;
 import io.jenetics.Optimize;

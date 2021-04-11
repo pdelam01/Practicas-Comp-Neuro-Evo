@@ -1,8 +1,7 @@
 package pdelam.galg;
 
 /**
- * @author pdelam01 aka dela
- *
+ * @author pdelam01
  */
 public class Population {
 	private Chromosome population[];
@@ -11,7 +10,7 @@ public class Population {
 	/**
 	 * Constructor de la clase.
 	 * 
-	 * @param n - tamaño población
+	 * @param n - tamaï¿½o poblaciï¿½n
 	 */
 	public Population(int n) {
 		this.population = new Chromosome[n];
@@ -19,10 +18,10 @@ public class Population {
 	
 	/**
 	 * Constructor de la clase.
-	 * Creamos cada cromosoma o individuo y lo añadimos a la población.
+	 * Creamos cada cromosoma o individuo y lo aï¿½adimos a la poblaciï¿½n.
 	 * 
-	 * @param n - tamaño población
-	 * @param tamChromosome - tamaño cromosoma (nº genes)
+	 * @param n - tamaï¿½o poblaciï¿½n
+	 * @param tamChromosome - tamaï¿½o cromosoma (nï¿½ genes)
 	 */
 	public Population(int n, int tamChromosome) {
 		this.population = new Chromosome[n];

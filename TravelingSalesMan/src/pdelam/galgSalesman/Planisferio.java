@@ -1,5 +1,8 @@
 package pdelam.galgSalesman;
 
+/**
+ * @author pdelam01
+ */
 import java.util.ArrayList;
 import java.util.Collections;
 

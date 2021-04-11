@@ -2,8 +2,7 @@ package pdelam.galg;
 import java.text.DecimalFormat;
 
 /**
- * @author pdelam01 aka dela
- *
+ * @author pdelam01
  */
 public class GeneticAlgorithm {
 	private int populationSize;
