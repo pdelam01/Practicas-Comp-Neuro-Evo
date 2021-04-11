@@ -5,9 +5,9 @@ import java.text.DecimalFormat;
  * @author pdelam01
  */
 public class GeneticAlgorithm {
-	private int populationSize;
-	private double probMutation;
-	private double probCrossover; 
+	private final int populationSize;
+	private final double probMutation;
+	private final double probCrossover;
 	
 	/**
 	 * false: no se muestra información | true: sí

@@ -4,7 +4,7 @@ package pdelam.galg;
  * @author pdelam01
  */
 public class Population {
-	private Chromosome population[];
+	private final Chromosome[] population;
 	private double populationApt;
 	
 	/**

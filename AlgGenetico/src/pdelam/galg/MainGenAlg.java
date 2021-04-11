@@ -11,7 +11,7 @@ public class MainGenAlg {
 	/**
 	 * false: 2 puntos cruce | true: 1 punto cruce
 	 */
-	final static boolean onePointCrossover = true;
+	final static boolean onePointCrossover = false;
 
 	/**
 	 * false: sin elitismo | true: con elitismo
@@ -27,6 +27,12 @@ public class MainGenAlg {
 	 * false: no ver gráfico | true: ver el gráfico
 	 */
 	final static boolean seeGraph = true;
+
+	/**
+	 * Valores maximos y minimos de los genes
+	 */
+	public static double[] max = { 10.0, 10.0, 10.0, 10.0, 10.0, 10.0};
+	public static double[] min = { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
 
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {

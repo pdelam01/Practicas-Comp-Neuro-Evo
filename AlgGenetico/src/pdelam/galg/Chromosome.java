@@ -5,10 +5,8 @@ import java.text.DecimalFormat;
  * @author pdelam01
  */
 public class Chromosome {
-	private double[] chromosome;
+	private final double[] chromosome;
 	private double aptitude;
-	private double max[] = { 10.0, 10.0, 10.0, 10.0, 10.0, 10.0};
-	private double min[] = { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
 	DecimalFormat formato1 = new DecimalFormat("0.00");
 	
 	/**
@@ -32,7 +30,7 @@ public class Chromosome {
 		this.chromosome = new double[chromosomeTam];
 		for (int i = 0; i < chromosomeTam; i++) {
 			for (int j = 0; j < getGenSize(); j++) {
-				this.setGen(j, (Math.random() * (max[j] - min[j]) + min[j]));
+				this.setGen(j, (Math.random() * (MainGenAlg.max[j] - MainGenAlg.min[j]) + MainGenAlg.min[j]));
 				//aux=(int)(Math.random() * (max-min+1)+min); valores 1-10 incluidos
 				//pero con double tomaria decimales por encima de este
 			}
@@ -61,15 +59,15 @@ public class Chromosome {
 	}
 
 	public double getMax(int index) {
-		return max[index];
+		return MainGenAlg.max[index];
 	}
 
 	public double getMin(int index) {
-		return min[index];
+		return MainGenAlg.min[index];
 	}
 	
 	public double getMaxLength() {
-		return max.length;
+		return MainGenAlg.max.length;
 	}
 
 	public void setAptitude(double aptitude) {
