@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -13,23 +14,26 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
  * @author pdelam01
+ *
  */
 public class Graph extends JFrame{
 	private static final long serialVersionUID = 1L;
-	private static final Color COLOR_FONDO_GRAFICA = new Color(163, 218, 216);
-	
-	public Graph(ArrayList<Double> apt) {
-		this.initPopulation(apt);
+	private static Color COLOR_FONDO_GRAFICA = new Color(163, 218, 216);
+	JPanel panel;
+
+	public Graph(ArrayList<Double> apt, Population pop) {
+		this.initPopulation(apt, pop);
 	}
-	
-	public void initPopulation(ArrayList<Double> apt) {
+
+	public void initPopulation(ArrayList<Double> apt, Population pop) {
 		DefaultCategoryDataset datos = new DefaultCategoryDataset();
 		for (int i = 0; i < apt.size(); i++) {
 			//1º: valor, 2º: id del grupo de datos, 3º: etiqueta columna del gráfico
 			datos.addValue(apt.get(i), "Aptitudes Totales por Población", " "+i);
+			datos.addValue((apt.get(i)/pop.getPopulationTam()), "Aptitudes Medias de la Población", " "+i);
 		}
-		
-		/* *
+
+		/**
 		 * 1º: Titulo, 2º: etiqueta nombre abcisas, 3º: etiqueta valor abcisas, 
 		 * 4º: dataset, 5º: orientación, y demás true-false
 		 */
@@ -37,7 +41,7 @@ public class Graph extends JFrame{
 				"Aptitud", datos, this.getOrientationV(), true, false, false);
 
 		grafica.setBackgroundPaint(COLOR_FONDO_GRAFICA);
-		
+
 		ChartPanel panelChart = new ChartPanel(grafica);
 		JFrame ventana = new JFrame("JFreeChart");
 		ventana.getContentPane().add(panelChart);
@@ -46,13 +50,13 @@ public class Graph extends JFrame{
 		ventana.setVisible(true);
 		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-	
+
 	public PlotOrientation getOrientationV() {
 		return PlotOrientation.VERTICAL;
 	}
-	
+
 	public PlotOrientation getOrientationH() {
 		return PlotOrientation.HORIZONTAL;
 	}
-	
+
 }
