@@ -206,7 +206,7 @@ public class GeneticAlgorithm {
 			Chromosome child = new Chromosome(parent1.getChromosomeTam());
 			Chromosome child2 = new Chromosome(parent1.getChromosomeTam());
 
-			if (this.probCrossover > (int) (Math.random() * 100 + 1)) {
+			if (this.probCrossover >= (int) (Math.random() * 100 + 1)) {
 				this.crossoverInfoPrint("\n   It's a match!");
 				int breakpoint = (int) (Math.random() * (parent1.getGenSize() - 1) + 1);
 
@@ -264,7 +264,7 @@ public class GeneticAlgorithm {
 			Chromosome child = new Chromosome(parent1.getChromosomeTam());
 			Chromosome child2 = new Chromosome(parent1.getChromosomeTam());
 			
-			if(this.probCrossover > (int) (Math.random() * 100 + 1)) {
+			if(this.probCrossover >= (int) (Math.random() * 100 + 1)) {
 				this.crossoverInfoPrint("\n   It's a match!");
 				int breakpoint1 = (int) (Math.random() * (parent1.getGenSize()-1)+1);
 				int breakpoint2 = (int) (Math.random() * (parent1.getGenSize()-1)+1);
