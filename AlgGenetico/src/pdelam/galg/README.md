@@ -6,4 +6,4 @@ que las que muestran la distinta información.
 - Se debe tener en cuenta que, si se quiere aumentar o disminuir el
 número de genes, se deben establecer sus máximos y mínimos. 
 
-- El tamaño dela población ha de ser un número par.
+- El tamaño de la población ha de ser un número par.
